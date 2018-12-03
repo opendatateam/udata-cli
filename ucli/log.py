@@ -2,7 +2,7 @@ import logging
 
 import click
 
-from .utils import color, yellow, red, cyan, white, ARROW, MAGNIFYING_GLASS
+from .utils import color, yellow, red, cyan, white, ARROW, MAGNIFYING_GLASS, WARNING
 
 
 LEVEL_COLORS = {
@@ -22,7 +22,9 @@ class CliFormatter(logging.Formatter):
 
         if record.levelno == logging.INFO:
             return ' '.join((cyan(ARROW), msg))
-        if record.levelno == logging.DEBUG:
+        elif record.levelno == logging.WARNING:
+            return ' '.join((yellow(WARNING), msg))
+        elif record.levelno == logging.DEBUG:
             return ' '.join((cyan(MAGNIFYING_GLASS), msg))
         else:
             color = LEVEL_COLORS.get(record.levelno, white)
@@ -44,7 +46,7 @@ class CliHandler(logging.Handler):
                 click.echo(details)
         except (KeyboardInterrupt, SystemExit):
             raise
-        except:
+        except Exception:
             self.handleError(record)
 
 

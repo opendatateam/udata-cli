@@ -26,6 +26,7 @@ def cli(ctx, url, token, verbose, **kwargs):
 
 # Import commands
 import ucli.commands.me  # noqa
+import ucli.commands.dispatch  # noqa
 import ucli.commands.status  # noqa
 import ucli.commands.transfer  # noqa
 import ucli.commands.datasets.delete  # noqa
