@@ -19,7 +19,7 @@ TARGET_CHOICES, (ORG_TARGET, USER_TARGET) = choice_enum('Organizations', 'Users'
 
 @cli.command()
 @click.option('--dryrun', '-d', is_flag=True)
-@click.option('--Force', '-f', is_flag=True)
+@click.option('--force', '-f', is_flag=True)
 @click.argument('file', type=click.File('r', encoding='utf8'))
 @pass_api
 def dispatch(api, file, dryrun, force):
@@ -45,10 +45,9 @@ def dispatch(api, file, dryrun, force):
     target_type = prompt_choices('Target type', *TARGET_CHOICES)
 
     message = click.prompt('Please enter the transfer reason')
+    warning = ''
 
-    if is_admin:
-        warning = ''
-    else:
+    if not is_admin:
         warning = ' '.join((
             yellow(WARNING),
             'You are not admin, this will create a transfer request for each item '
@@ -73,7 +72,7 @@ def dispatch(api, file, dryrun, force):
         warning=warning,
     ))
     if not force:
-        click.confirm('Are you sure ?', abort=True)
+        click.confirm('Are you sure?', abort=True)
     click.echo('')
 
     # Perform
